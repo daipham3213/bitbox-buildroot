@@ -1,0 +1,45 @@
+name: build-buildroot
+
+on:
+    push:
+        branches:
+        - master
+    pull_request:
+        branches:
+        - master
+env:
+    BUILDROOT_VERSION: 2025.02
+
+jobs:
+    build: 
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+
+        - name: Set up buildroot
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y  sed make binutils build-essential diffutils gcc g++ bash patch gzip bzip2 perl tar cpio unzip rsync file bc findutils
+            
+            git clone -b $BUILDROOT_VERSION https://gitlab.com/buildroot.org/buildroot/ /opt/buildroot
+            cd /opt/buildroot
+
+        - name: Build
+          run: |
+            mkdir /opt/firmware
+            cd /opt/buildroot
+
+            make BR2_EXTERNAL=${{ github.workspace }} bitbox_defconfig
+            make
+
+            cp -r /opt/buildroot/output/images /opt/firmware
+
+        - name : Upload buildroot-${{ env.BUILDROOT_VERSION}}-bitbox
+          uses: actions/upload-artifact@v4
+          with:
+            name: buildroot-${{ env.BUILDROOT_VERSION}}-bitbox
+            path: /opt/firmware/images
+
+            
