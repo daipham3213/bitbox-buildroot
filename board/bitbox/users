@@ -1,1 +1,1 @@
-daiplg -2 user -2 - /home/daiplg /bin/ash sudo dialout
+daiplg -2 user -2 - /home/daiplg /bin/bash sudo dialout
