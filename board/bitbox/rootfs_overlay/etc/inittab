@@ -29,7 +29,7 @@ null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
 ::sysinit:/etc/init.d/rcS
 
 # Put a getty on the serial port
-console::respawn:/bin/login -f daiplg # GENERIC_SERIAL
+console::respawn:/bin/login -f vt100
 #serial tty's
 ttyS0::respawn:/bin/login -f daiplg
 ttyS1::respawn:/bin/login -f daiplg
