@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Start custom scripts
+#
+
+_config_bundled_scrips() {
+    sudo chmod +x /usr/bin/static-get
+    sudo chmod +x /usr/bin/pfetch
+}
+
+_config_interfaces() {
+    # Get the list of network interfaces
+    local interfaces=$(ip -o link show | awk -F': ' '{print $2}')
+    # Filter out loopback and virtual interfaces
+    local filtered_interfaces=$(echo "$interfaces" | grep -vE '^(lo|virbr|docker|sit)')
+    for interface in $filtered_interfaces; do
+        sudo udhcpc -i "$interface" 2>/dev/null || true
+    done
+}
+
+case "$1" in
+    start)
+        # Start custom scripts
+        _config_bundled_scrips
+        # Configure network interfaces
+        _config_interfaces
+        ;;
+    stop)
+        # Stop custom scripts (if needed)
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+
+exit $?

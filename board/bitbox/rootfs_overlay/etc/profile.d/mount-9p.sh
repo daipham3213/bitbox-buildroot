@@ -1,1 +1,0 @@
-sudo mount -t 9p host9p /home

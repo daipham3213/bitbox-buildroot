@@ -463,7 +463,7 @@ BR2_ENABLE_LOCALE_WHITELIST="C en_US"
 BR2_ROOTFS_USERS_TABLES="bitbox-buildroot/board/bitbox/users"
 BR2_ROOTFS_OVERLAY="bitbox-buildroot/board/bitbox/rootfs_overlay"
 BR2_ROOTFS_PRE_BUILD_SCRIPT=""
-BR2_ROOTFS_POST_BUILD_SCRIPT=""
+BR2_ROOTFS_POST_BUILD_SCRIPT="bitbox-buildroot/board/bitbox/post-build.sh"
 BR2_ROOTFS_POST_FAKEROOT_SCRIPT=""
 BR2_ROOTFS_POST_IMAGE_SCRIPT=""
 
