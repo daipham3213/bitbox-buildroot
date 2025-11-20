@@ -19,7 +19,7 @@ The active project name is `bitbox` (controlled by the `ACTIVE_PROJECT` make var
 
 ## Quick Start (Windows PowerShell or POSIX shell)
 
-```powershell
+```bash
 # 1. Fetch and unpack Buildroot (once)
 make bootstrap
 
@@ -157,6 +157,3 @@ See `LICENSE` for details.
 * [Setting up Out-of-Tree Folder Structure](https://eerdemsimsek.medium.com/setting-up-buildroot-out-of-tree-folder-structure-for-raspberry-pi-4b-fbd9765c0206)
 * [v86 Emulator](https://github.com/copy/v86)
 * [Original v86 Buildroot Issue / Discussion](https://github.com/copy/v86/issues/725)
-
----
-Updated: 2025-11-20
