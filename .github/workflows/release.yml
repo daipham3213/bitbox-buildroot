@@ -1,11 +1,14 @@
-name: makefile build
-
+name: Release Build
 on:
-  pull_request:
-    branches: [ "master" ]
+  create:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  release:
 
     runs-on: ubuntu-latest
 
@@ -21,9 +24,8 @@ jobs:
       - name: Build Buildroot
         run: make all
 
-      - name: Upload release archive
-        uses: actions/upload-artifact@v4
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
         with:
-          name: buildroot-v86-release
-          path: |
-            build/*/images/
+          files: build/*/images/
