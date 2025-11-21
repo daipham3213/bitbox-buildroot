@@ -3,11 +3,6 @@
 # Start custom scripts
 #
 
-_config_bundled_scrips() {
-    sudo chmod +x /usr/bin/static-get
-    sudo chmod +x /usr/bin/pfetch
-}
-
 _config_interfaces() {
     # Get the list of network interfaces
     local interfaces=$(ip -o link show | awk -F': ' '{print $2}')
@@ -20,8 +15,6 @@ _config_interfaces() {
 
 case "$1" in
     start)
-        # Start custom scripts
-        _config_bundled_scrips
         # Configure network interfaces
         _config_interfaces
         ;;
