@@ -2,7 +2,7 @@ name: Release Build
 on:
   create:
     tags:
-      - '*'
+      - "v*.*.*"
 
 permissions:
   contents: write
@@ -28,4 +28,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
-          files: build/*/images/
+          files: build/*/images/*
