@@ -2,44 +2,44 @@
 #
 # Start custom scripts
 #
-_init_crontab() {
-    mkdir -p /var/spool/cron/crontabs
-    touch /var/spool/cron/crontabs/root
+_start_metricd() {
+  # start a metrics daemon in the background
+  /usr/bin/metrics &
+  echo $! >/var/run/metrics.pid
+}
 
-    echo "*/1 * * * * /usr/bin/metrics" >> /var/spool/cron/crontabs/root
-    chmod 600 /var/spool/cron/crontabs/root
-
-    crond
+_stop_metricd() {
+  kill $(cat /var/run/metrics.pid)
 }
 
 _config_stats_output() {
-    stty raw < /dev/hvc1
+  stty raw </dev/hvc1
 }
 
 _config_interfaces() {
-    # Get the list of network interfaces
-    local interfaces=$(ip -o link show | awk -F': ' '{print $2}')
-    # Filter out loopback and virtual interfaces
-    local filtered_interfaces=$(echo "$interfaces" | grep -vE '^(lo|virbr|docker|sit)')
-    for interface in $filtered_interfaces; do
-        sudo udhcpc -i "$interface" 2>/dev/null || true
-    done
+  # Get the list of network interfaces
+  local interfaces=$(ip -o link show | awk -F': ' '{print $2}')
+  # Filter out loopback and virtual interfaces
+  local filtered_interfaces=$(echo "$interfaces" | grep -vE '^(lo|virbr|docker|sit)')
+  for interface in $filtered_interfaces; do
+    sudo udhcpc -i "$interface" 2>/dev/null || true
+  done
 }
 
 case "$1" in
-    start)
-        # Configure network interfaces
-        _init_crontab
-        _config_stats_output
-        _config_interfaces
-        ;;
-    stop)
-        # Stop custom scripts (if needed)
-        ;;
-    *)
-        echo "Usage: $0 {start|stop}"
-        exit 1
-        ;;
+start)
+  # Configure network interfaces
+  _config_stats_output
+  _config_interfaces
+  _start_metricd
+  ;;
+stop)
+  # Stop custom scripts (if needed)
+  ;;
+*)
+  echo "Usage: $0 {start|stop}"
+  exit 1
+  ;;
 esac
 
 exit $?
