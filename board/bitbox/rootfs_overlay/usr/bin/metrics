@@ -1,0 +1,7 @@
+#!/bin/sh
+# a simple script to send memory usage metrics to the hypervisor console every 3 seconds
+
+while true; do
+  cat /proc/meminfo > /dev/hvc1
+  sleep 3
+done

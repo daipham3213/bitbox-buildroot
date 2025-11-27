@@ -2,6 +2,19 @@
 #
 # Start custom scripts
 #
+_init_crontab() {
+    mkdir -p /var/spool/cron/crontabs
+    touch /var/spool/cron/crontabs/root
+
+    echo "*/1 * * * * /usr/bin/metrics" >> /var/spool/cron/crontabs/root
+    chmod 600 /var/spool/cron/crontabs/root
+
+    crond
+}
+
+_config_stats_output() {
+    stty raw < /dev/hvc1
+}
 
 _config_interfaces() {
     # Get the list of network interfaces
@@ -16,6 +29,8 @@ _config_interfaces() {
 case "$1" in
     start)
         # Configure network interfaces
+        _init_crontab
+        _config_stats_output
         _config_interfaces
         ;;
     stop)
